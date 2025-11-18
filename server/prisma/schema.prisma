@@ -13,3 +13,104 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum HealthRecordType {
+  VACUNA
+  DESPARASITACION_INTERNA
+  DESPARASITACION_EXTERNA
+  VISITA
+  ANALISIS
+  TRATAMIENTO
+  OTRO
+}
+
+enum ReminderType {
+  VACUNA
+  ALIMENTACION
+  VISITA
+  OTRO
+}
+
+model User {
+  id         String   @id @default(uuid())
+  username   String
+  email      String   @unique
+  password   String
+  photo_url  String?
+  role       Role     @default(USER)
+
+  pets       Pet[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Pet {
+  id         String   @id @default(uuid())
+  name       String
+  age        String?
+  weight     Float?
+  specie     String
+  breed      String?
+  photo_urls  String[] // ARRAY de URLs
+
+  owner_id   String
+  owner      User     @relation(fields: [owner_id], references: [id])
+
+  health_records     HealthRecord[]
+  nutrition_records  NutritionRecord[]
+  reminders          Reminder[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model HealthRecord {
+  id            String            @id @default(uuid())
+  pet_id        String
+  pet           Pet               @relation(fields: [pet_id], references: [id])
+
+  type          HealthRecordType
+  description   String?
+  first_date    DateTime?
+  second_date   DateTime?
+  document_urls  String[]   // ARRAY de archivos (fotos, pdf)
+  vet_name      String?
+
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+}
+
+model NutritionRecord {
+  id            String   @id @default(uuid())
+  pet_id        String
+  pet           Pet      @relation(fields: [pet_id], references: [id])
+
+  food_type     String
+  food_brand    String?
+  daily_meals   Int
+  portion_size  String // ej: "100g", "1 taza"
+  notes         String?
+
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+}
+
+model Reminder {
+  id            String        @id @default(uuid())
+  pet_id        String
+  pet           Pet           @relation(fields: [pet_id], references: [id])
+
+  title         String
+  type          ReminderType
+  date          DateTime
+  is_completed  Boolean @default(false)
+
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+}
