@@ -16,6 +16,7 @@ export class PrismaService
     try {
       this.logger.log('Connecting to the database...');
       await this.$connect();
+      this.logger.log('DATABASE CONNECTED');
     } catch (error) {
       this.logger.error('Error connecting to the database', error);
     }
