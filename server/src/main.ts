@@ -20,6 +20,10 @@ async function bootstrap() {
     transform: true,        // Transforma los datos a los tipos especificados
   }));
 
+  // ----------------- Global prefix ------------------
+  app.setGlobalPrefix('api');
+
+
   // ----------------- Swagger ------------------
   const config = new DocumentBuilder()
     .setTitle('PetCare API')
@@ -30,31 +34,15 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api/docs', app, document);
 
-  // ----------------- Rutas universales ------------------
-  app.getHttpAdapter().get('/', (req, res) => {
-    res.json({
-      message: 'PetCare API está funcionando! 🐾',
-      timestamp: new Date().toISOString(),
-      documentation: '/api',
-      health: '/health',
-    });
-  });
 
-  app.getHttpAdapter().get('/health', (req, res) => {
-    res.json({
-      status: 'OK',
-      timestamp: new Date().toISOString(),
-      uptime: process.uptime(),
-    });
-  });
-
+  //------------------ Start server ------------------
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
   
-  console.log(`🚀 Application is running on: http://localhost:${port}`);
-  console.log(`📚 Swagger documentation: http://localhost:${port}/api`);
+  console.log(`🚀 Application is running on: http://localhost:${port}/api`);
+  console.log(`📚 Swagger documentation: http://localhost:${port}/api/docs`);
 }
 
 bootstrap();
