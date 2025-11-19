@@ -1,10 +1,13 @@
+import Header from "./components/header"
+import Banner from "./components/Banner"
 
 function App() {
 
 
   return (
     <>
-     <h1 className='text-orange-500 text-4xl text-center'>Pet Health Tracker</h1>
+      <Header />
+      <Banner />
     </>
   )
 }
