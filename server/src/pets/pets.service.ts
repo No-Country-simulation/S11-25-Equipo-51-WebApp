@@ -1,34 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreatePetDto } from './dto/create-pet.dto';
 import { UpdatePetDto } from './dto/update-pet.dto';
-import { NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class PetsService {
 
+  constructor(private readonly prisma: PrismaService) {}
 
-    constructor(private readonly prisma: PrismaService) {}
-
-
-// ------------------- Create pet with ownerId -------------------
-    async create(ownerId: string, createPetDto: CreatePetDto) {
+  // ------------------- CREATE -------------------
+  async create(createPetDto: CreatePetDto) {
     return await this.prisma.pet.create({
-      data: {
-        ...createPetDto,
-      owner_id: ownerId
-      }
+      data: createPetDto,
     });
   }
 
-// ----------------------Find all pets by userId---------------------
-
+  // ---------------------- FIND ALL BY USER ---------------------
   async findAllByUser(ownerId: string) {
     return await this.prisma.pet.findMany({
-      where: {
-        owner_id: ownerId
-      },
-      include:{
+      where: { owner_id: ownerId },
+      include: {
         health_records: true,
         nutrition_records: true,
         reminders: true,
@@ -36,49 +27,34 @@ export class PetsService {
     });
   }
 
-
-  // ---------------------- Find one pet by id and ownerId ----------------------
-
-  async findOne(id: string, ownerId: string) {
-    const pet = await this.prisma.pet.findFirst({
-      where: {
-        id: id,
-        owner_id: ownerId,
-
-  },
-   include:{
+  // ---------------------- FIND ONE ----------------------
+  async findOne(id: string) {
+    const pet = await this.prisma.pet.findUnique({
+      where: { id },
+      include: {
         health_records: true,
         nutrition_records: true,
         reminders: true,
       },
     });
 
-      if (!pet) {
+    if (!pet) {
       throw new NotFoundException('Pet not found');
     }
+
     return pet;
   }
 
-
-  // ---------------------- Update pet by id and ownerId ----------------------
- async update(id: string, ownerId:string, updatePetDto: UpdatePetDto) {
-    await this.findOne(id, ownerId);
-
-
+  // ---------------------- UPDATE ----------------------
+  async update(id: string, updatePetDto: UpdatePetDto) {
     return await this.prisma.pet.update({
       where: { id },
       data: updatePetDto,
     });
   }
 
-
-
-  // ---------------------- Remove pet by id and ownerId ----------------------
-
-  async remove(id: string, ownerId:string) {
-    
-    await this.findOne(id, ownerId);
-
+  // ---------------------- DELETE ----------------------
+  async remove(id: string) {
     return await this.prisma.pet.delete({
       where: { id },
     });
