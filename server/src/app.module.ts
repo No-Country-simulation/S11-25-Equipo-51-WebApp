@@ -7,9 +7,18 @@ import { HealthRecordsModule } from './health-records/health-records.module';
 import { RemindersModule } from './reminders/reminders.module';
 import { NutritionRecordsModule } from './nutrition-records/nutrition-records.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UsersModule, PetsModule, HealthRecordsModule, RemindersModule, NutritionRecordsModule, PrismaModule],
+  imports: [
+    UsersModule,
+    PetsModule,
+    HealthRecordsModule,
+    RemindersModule,
+    NutritionRecordsModule,
+    PrismaModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
