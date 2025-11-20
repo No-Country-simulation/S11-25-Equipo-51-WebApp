@@ -7,28 +7,46 @@ import { UpdatePetDto } from './dto/update-pet.dto';
 export class PetsController {
   constructor(private readonly petsService: PetsService) {}
 
-  @Post()
-  create(@Body() createPetDto: CreatePetDto) {
-    return this.petsService.create(createPetDto);
+  // --------------------- CREATE ---------------------
+  @Post(':ownerId')
+  create(
+    @Param('ownerId') ownerId: string,
+    @Body() createPetDto: CreatePetDto,
+  ) {
+    return this.petsService.create(ownerId, createPetDto);
   }
 
-  @Get()
-  findAll() {
-    return this.petsService.findAll();
+  // --------------------- FIND ALL BY OWNER ---------------------
+  @Get(':ownerId')
+  findAllByOwner(@Param('ownerId') ownerId: string) {
+    return this.petsService.findAllByUser(ownerId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.petsService.findOne(+id);
+  // --------------------- FIND ONE ---------------------
+  @Get(':ownerId/:id')
+  findOne(
+    @Param('ownerId') ownerId: string,
+    @Param('id') id: string,
+  ) {
+    return this.petsService.findOne(id, ownerId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePetDto: UpdatePetDto) {
-    return this.petsService.update(+id, updatePetDto);
+  // --------------------- UPDATE ---------------------
+  @Patch(':ownerId/:id')
+  update(
+    @Param('ownerId') ownerId: string,
+    @Param('id') id: string,
+    @Body() updatePetDto: UpdatePetDto,
+  ) {
+    return this.petsService.update(id, ownerId, updatePetDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.petsService.remove(+id);
+  // --------------------- DELETE ---------------------
+  @Delete(':ownerId/:id')
+  remove(
+    @Param('ownerId') ownerId: string,
+    @Param('id') id: string,
+  ) {
+    return this.petsService.remove(id, ownerId);
   }
 }
