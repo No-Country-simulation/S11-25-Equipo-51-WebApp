@@ -1,26 +1,55 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { plainToInstance } from 'class-transformer';
+import { UserResponseDto } from './dto/response-user.dto';
+import { User } from 'generated/prisma/client';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(private readonly prisma: PrismaService) {}
+  async create(createUserDto: CreateUserDto): Promise<UserResponseDto> {
+    const user = await this.prisma.user.create({
+      data: createUserDto,
+    });
+    return plainToInstance(UserResponseDto, user);
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll(): Promise<UserResponseDto[]> {
+    const users = await this.prisma.user.findMany();
+    return plainToInstance(UserResponseDto, users);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string): Promise<UserResponseDto> {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
+    return plainToInstance(UserResponseDto, user);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async findByEmail(email: string): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+    return user;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserResponseDto> {
+    const user = await this.prisma.user.update({
+      where: { id },
+      data: updateUserDto,
+    });
+    return plainToInstance(UserResponseDto, user);
+  }
+
+  async remove(id: string): Promise<UserResponseDto> {
+    const user = await this.prisma.user.delete({
+      where: { id },
+    });
+    return plainToInstance(UserResponseDto, user);
   }
 }
