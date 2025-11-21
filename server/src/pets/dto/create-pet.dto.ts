@@ -27,7 +27,6 @@ export class CreatePetDto {
   })
   @IsOptional()
   @IsNumber()
-  @Min(0)
   weight?: number;
 
   @ApiProperty({
