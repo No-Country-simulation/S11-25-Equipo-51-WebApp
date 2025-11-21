@@ -1,10 +1,12 @@
-import { IsAlpha, IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 import { Trim } from 'src/common/decorators/trim.decorator';
+import { IsFullName } from 'src/common/validators/is-full-name.validator';
+import { IsStrongPassword } from 'src/common/validators/is-strong-password.validator';
 
 export class RegisterDto {
   @IsNotEmpty()
   @MinLength(3)
-  @IsAlpha()
+  @IsFullName()
   @Trim()
   username: string;
 
@@ -13,6 +15,6 @@ export class RegisterDto {
   email: string;
 
   @IsNotEmpty()
-  @MinLength(6)
+  @IsStrongPassword()
   password: string;
 }
