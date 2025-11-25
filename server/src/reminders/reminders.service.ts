@@ -1,26 +1,58 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateReminderDto } from './dto/create-reminder.dto';
 import { UpdateReminderDto } from './dto/update-reminder.dto';
 
 @Injectable()
 export class RemindersService {
-  create(createReminderDto: CreateReminderDto) {
-    return 'This action adds a new reminder';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createReminderDto: CreateReminderDto) {
+    return await this.prisma.reminder.create({
+      data: createReminderDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all reminders`;
+  async findAll() {
+    return await this.prisma.reminder.findMany({
+      orderBy: { date: 'asc' },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} reminder`;
+  async findOneById(id: string) {
+    const reminder = await this.prisma.reminder.findUnique({
+      where: { id },
+    });
+
+    if (!reminder) {
+      throw new NotFoundException('Reminder not found');
+    }
+
+    return reminder;
   }
 
-  update(id: number, updateReminderDto: UpdateReminderDto) {
-    return `This action updates a #${id} reminder`;
+  async update(id: string, updateReminderDto: UpdateReminderDto) {
+    const exists = await this.prisma.reminder.findUnique({ where: { id } });
+
+    if (!exists) {
+      throw new NotFoundException('Reminder not found');
+    }
+
+    return await this.prisma.reminder.update({
+      where: { id },
+      data: updateReminderDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reminder`;
+  async remove(id: string) {
+    const exists = await this.prisma.reminder.findUnique({ where: { id } });
+
+    if (!exists) {
+      throw new NotFoundException('Reminder not found');
+    }
+
+    return await this.prisma.reminder.delete({
+      where: { id },
+    });
   }
 }
