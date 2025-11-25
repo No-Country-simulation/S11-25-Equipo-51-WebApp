@@ -30,7 +30,7 @@ const MyPetsDashboard = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {pets.map((pet) => (
-                    <div key={pet.id} className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 ease-in-out hover:-translate-y-2">
+                    <div key={pet.id} className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 ease-in-out hover:-translate-y-2 cursor-pointer">
                         <div className="h-48 w-full overflow-hidden">
                             <img
                                 src={pet.image}
