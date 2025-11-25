@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { FaBell, FaCalendarAlt, FaClock, FaPlus } from 'react-icons/fa';
 import CalendarModal from './CalendarModal';
+import AddReminderModal from './AddReminderModal';
+
 
 const Reminders = () => {
     const [activeTab, setActiveTab] = useState('upcoming');
     const [showCalendar, setShowCalendar] = useState(false);
+    const [showAddModal, setShowAddModal] = useState(false);
 
-    const reminders = [
+    const [reminders, setReminders] = useState([
         {
             id: 1,
             title: 'Vacuna antirrábica',
@@ -47,7 +50,30 @@ const Reminders = () => {
             urgent: false,
             iconColor: 'bg-amber-100 text-amber-500',
         },
-    ];
+    ]);
+
+    const handleAddReminder = (data) => {
+        const iconColors = {
+            'Vacuna': 'bg-purple-100 text-purple-500',
+            'Cita': 'bg-blue-100 text-blue-500',
+            'Medicamento': 'bg-green-100 text-green-500',
+            'Higiene': 'bg-amber-100 text-amber-500',
+        };
+
+        const newReminder = {
+            id: reminders.length + 1,
+            title: data.title,
+            pet: data.pet,
+            date: new Date(data.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }),
+            time: data.time,
+            type: data.type,
+            urgent: data.urgent,
+            iconColor: iconColors[data.type] || 'bg-gray-100 text-gray-500',
+        };
+
+        setReminders([newReminder, ...reminders]);
+    };
+
 
     return (
         <div className="min-h-screen bg-gray-50 pb-20">
@@ -85,7 +111,11 @@ const Reminders = () => {
                     </button>
                 </div>
 
-                <button className="w-full bg-gradient-to-r from-orange-400 to-red-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-orange-500/30 flex items-center justify-center gap-2 mb-6 hover:opacity-95 transition-opacity">
+                <button
+                    onClick={() => setShowAddModal(true)}
+                    className="w-full bg-gradient-to-r from-orange-400 to-red-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-orange-500/30 flex items-center justify-center gap-2 mb-6 hover:opacity-95 transition-opacity"
+                >
+
                     <FaPlus className="text-lg" />
                     <span>Agregar recordatorio</span>
                 </button>
@@ -143,6 +173,13 @@ const Reminders = () => {
                 onClose={() => setShowCalendar(false)}
                 reminders={reminders}
             />
+
+            <AddReminderModal
+                isOpen={showAddModal}
+                onClose={() => setShowAddModal(false)}
+                onAdd={handleAddReminder}
+            />
+
         </div>
     );
 };
