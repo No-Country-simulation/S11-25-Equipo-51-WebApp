@@ -1,6 +1,7 @@
 import SideBar from "./components/SideBar"
 import Dashboard from "./components/Dashboard"
 import MyPetsDashboard from "./components/MyPetsDashboard"
+import UpcomingEvents from "./components/UpcomingEvents"
 
 function App() {
 
@@ -10,6 +11,7 @@ function App() {
       <SideBar />
       <Dashboard />
       <MyPetsDashboard />
+      <UpcomingEvents />
     </div>
 
   )
