@@ -12,14 +12,14 @@ const Dashboard = () => {
       {/* Contenido */}
       <div className="flex-1 p-4">
         {/* Header Gradient */}
-        <div className="relative p-6 md:p-8 w-full max-w-full min-h-[280px] md:h-[320px] rounded-3xl bg-gradient-to-r from-[#00BA7D] to-[#00BFA5] shadow-xl">
+        <div className="relative p-6 md:p-8 w-full max-w-full min-h-[280px] md:h-[300px] rounded-3xl bg-gradient-to-r from-[#00BA7D] to-[#00BFA5] shadow-xl">
           {/* Botón */}
           <button className="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-white/20 text-white transition hover:bg-white/30">
             <FaHeart className="h-5 w-5" />
           </button>
 
           {/* Título */}
-          <div className="mb-8">
+          <div className="mb-6">
             <p className="font-poppins text-base text-white">
               Hola, Usuario 👋
             </p>

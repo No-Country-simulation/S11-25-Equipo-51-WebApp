@@ -3,7 +3,7 @@ import { Stethoscope } from 'lucide-react';
 
 const Header = () => {
   return (
-    <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 sm:p-8">
+    <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 sm:p-8 rounded-3xl shadow-md mb-6">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between">
           <div>

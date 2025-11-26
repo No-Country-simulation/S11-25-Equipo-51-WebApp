@@ -6,6 +6,7 @@ import BottomNav from '../components/common/BottomNav'
 import VaccinasTab from '../components/health/VaccinasTab'
 import ChequeosTab from '../components/health/ChequeosTab'
 import TratamientosTab from '../components/health/TratamientosTab'
+import Header from '../components/common/Header';
 
 const HealthSection = () => {
 
@@ -13,7 +14,9 @@ const HealthSection = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      
+    
+
+      <Header/>
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
         <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />

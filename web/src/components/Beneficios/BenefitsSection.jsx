@@ -13,13 +13,12 @@ export default function BenefitsSection() {
   return (
     <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-blue-50">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-
         {/* Imagen */}
-        <div className="order-2 lg:order-1">
+        <div className="order-2 lg:order-1 flex justify-center">
           <img
-            src="/public/img-beneficios.jpg" 
+            src="/public/img-beneficios.jpg"
             alt="Beneficios mascotas"
-            className="rounded-3xl shadow-2xl h-lg"
+            className="rounded-3xl shadow-2xl h-[600px] max-w-[450px] object-cover"
           />
         </div>
 
@@ -30,7 +29,8 @@ export default function BenefitsSection() {
           </h2>
 
           <p className="text-lg text-gray-600 mb-8">
-            Únete a miles de dueños de mascotas que confían en nosotros con la salud de sus miembros peludos de la familia.
+            Únete a miles de dueños de mascotas que confían en nosotros con la
+            salud de sus miembros peludos de la familia.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
@@ -62,5 +62,3 @@ export default function BenefitsSection() {
     </section>
   );
 }
-
-
