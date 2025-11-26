@@ -1,10 +1,17 @@
+import { Routes, Route } from "react-router-dom";
+import Login from "./pages/Login"
+import Register from "./pages/Register";
 
 function App() {
 
 
   return (
     <>
-     <h1 className='text-orange-500 text-4xl text-center'>Pet Health Tracker</h1>
+     
+     <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+    </Routes>
     </>
   )
 }
