@@ -19,7 +19,7 @@ export default function BenefitsSection() {
           <img
             src="/public/img-beneficios.jpg" 
             alt="Beneficios mascotas"
-            className="rounded-3xl shadow-2xl w-full"
+            className="rounded-3xl shadow-2xl h-lg"
           />
         </div>
 

@@ -1,34 +1,27 @@
-import Header from "./components/header"
-import Banner from "./components/Banner"
+import Header from "./components/header";
+import Banner from "./components/Banner";
 
-import './index.css'
+import "./index.css";
 
-
-import Dashboard from "./components/Dashboard"
+import Dashboard from "./components/Dashboard";
 
 import { Routes, Route } from "react-router-dom";
-import Login from "./pages/Login"
+import Login from "./pages/Login";
 import Register from "./pages/Register";
-import LandingPage from './pages/LandingPage';
-
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   return (
     <>
-     
-     <Routes>
+      <Routes>
         <Route path="/" element={<LandingPage />} />
-      <Route path="/dashboard" element={<Dashboard />} />
- 
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
 
-   
-      
-    </Routes>
-
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
