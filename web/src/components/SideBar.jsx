@@ -25,8 +25,11 @@ const SideBar = () => {
 
     return (
         <>
+            {/* Fondo del header movil */}
+            <div className="md:hidden fixed top-0 left-0 w-full h-20 bg-white z-40 shadow-sm"></div>
+
             {/* logo en movil (visible cuando el menu esta cerrado) */}
-            <div className={`md:hidden fixed top-4 left-4 z-30 transition-opacity duration-300 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+            <div className={`md:hidden fixed top-4 left-4 z-50 transition-opacity duration-300 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                 <Logo />
             </div>
 
@@ -50,14 +53,14 @@ const SideBar = () => {
             {/* Overlay para movil */}
             {isOpen && (
                 <div
-                    className="md:hidden fixed inset-0 bg-black/50 z-30"
+                    className="md:hidden fixed inset-0 bg-black/50 z-40"
                     onClick={() => setIsOpen(false)}
                 />
             )}
 
             {/* Contenedor del menu */}
             <div className={`
-                fixed md:static inset-y-0 left-0 z-40
+                fixed md:static inset-y-0 left-0 z-50
                 w-64 bg-white border-r border-gray-100 flex flex-col p-4 shadow-sm
                 transition-transform duration-300 ease-in-out
                 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
