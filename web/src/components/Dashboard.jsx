@@ -1,9 +1,11 @@
 import React from 'react';
 import { FaHeart, FaCalendarAlt, FaExclamationTriangle } from 'react-icons/fa';
+import SideBar from "../components/SideBar"
 
 const Dashboard = () => {
     return (
         <div className="w-full p-4">
+           
             <div className="relative w-full overflow-hidden rounded-3xl bg-gradient-to-r from-[#00BA7D] to-[#00BFA5] p-8 shadow-xl">
                 <button className="absolute right-6 top-6 flex h-12 w-12 items-center justify-center rounded-full bg-white/20 text-white transition-colors hover:bg-white/30">
                     <FaHeart className="h-5 w-5" />
@@ -40,6 +42,7 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
+            <SideBar />
         </div>
     );
 };
