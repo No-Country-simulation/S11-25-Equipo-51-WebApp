@@ -1,3 +1,5 @@
+import Header from "./components/header"
+import Banner from "./components/Banner"
 
 import './index.css'
 
