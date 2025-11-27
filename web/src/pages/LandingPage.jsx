@@ -6,16 +6,19 @@ import CallToAction from "../components/CallToAction/CallToAction";
 import FAQ from "../components/FAQ";
 import Footer from "../components/Footer/Footer";
 import BenefitsSection from "../components/Beneficios/BenefitsSection";
+import ServicesSection from "../Components/ServicesSection/ServicesSection";
+import InfoSection from "../Components/ServicesSection/InfoSection";
 
 const LandingPage = () => {
   return (
     <>
       <Header />
       <Banner />
+      <ServicesSection/>
+      <InfoSection />
       <BenefitsSection />
       <Testimonials />
       <FAQ />
-
       <CallToAction />
       <Footer />
     </>

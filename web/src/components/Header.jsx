@@ -1,5 +1,6 @@
 import React from 'react'
-import { FaHeart, FaArrowRight } from "react-icons/fa";
+import { FaHeart, FaArrowRight } from "react-icons/fa"
+import { Link } from 'react-router-dom';
 
 
 const Header = () => {
@@ -11,10 +12,11 @@ const Header = () => {
                 </div>
                 <h1 className='text-[#0A99A5] text-xl font-poppins'>Pet Health</h1>
             </div>
-            <button className='flex items-center gap-2 bg-gradient-to-r from-[#00BFA5] to-[#00C8FF] text-white px-6 py-2 rounded-full hover:opacity-90 transition-opacity '>
-                <span className='font-medium'>Iniciar Sesión</span>
+
+            <Link to="/login" className='flex items-center gap-2 bg-gradient-to-r from-[#00BFA5] to-[#00C8FF] text-white px-6 py-2 rounded-full hover:opacity-90 transition-opacity '>
+                 <span className='font-medium'>Iniciar Sesión</span>
                 <FaArrowRight />
-            </button>
+            </Link>
         </header>
     )
 }

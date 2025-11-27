@@ -69,7 +69,7 @@ const Register = () => {
             placeholder="•••••••"
           />
           <button type="submit" className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-primary/90 h-9 px-4 has-[>svg]:px-3 w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-xl py-6 shadow-lg shadow-emerald-200">
-           Crear cuenta
+           Crear cuenta 
           </button>
         </form>
         <div className="flex flex-col items-center gap-6 mt-10">
@@ -90,7 +90,7 @@ const Register = () => {
               <FcGoogle />  Registrarse con Google
           </button>
           <p className="text-sm text-emerald-600 hover:text-emerald-700 cursor-pointer">
-            ¿No tienes cuenta?{" "}
+            ¿Ya tienes cuenta?{" "} Iniciar Sesión
             <Link to="/login" className="text-emerald-600 hover:text-emerald-700 cursor-pointer ">
              
             </Link>
