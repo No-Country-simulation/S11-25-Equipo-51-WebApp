@@ -13,13 +13,13 @@ model User {
   email      String   @unique
   password   String
   photo_url  String?
-    hashedRefreshToken    String?
+  hashedRefreshToken    String?
   resetPasswordToken    String?     
   resetPasswordExpires  DateTime?   
   role       Role     @default(USER)
 
   pets       Pet[]
-  
+
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
