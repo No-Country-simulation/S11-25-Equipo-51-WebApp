@@ -2,16 +2,31 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreatePetDto } from './dto/create-pet.dto';
 import { UpdatePetDto } from './dto/update-pet.dto';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class PetsService {
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService,
+              private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
-  // ------------------- CREATE -------------------
-  async create(createPetDto: CreatePetDto) {
+
+
+   // ------------------- CREATE  -------------------
+  async createWithImages(createPetDto: CreatePetDto, files: Express.Multer.File[]) {
+    let photo_urls: string[] = [];
+
+    // Subir imágenes a Cloudinary si hay archivos
+    if (files && files.length > 0) {
+      photo_urls = await this.cloudinaryService.uploadMultipleImages(files, 'pets');
+    }
+
     return await this.prisma.pet.create({
-      data: createPetDto,
+      data: {
+        ...createPetDto,
+        photo_urls, // Usar las URLs de Cloudinary
+      },
     });
   }
 
@@ -45,11 +60,39 @@ export class PetsService {
     return pet;
   }
 
-  // ---------------------- UPDATE ----------------------
-  async update(id: string, updatePetDto: UpdatePetDto) {
+
+
+  // ---------------------- UPDATE WITH IMAGES ----------------------
+  async updateWithImages(id: string, updatePetDto: UpdatePetDto, files: Express.Multer.File[]) {
+    let photo_urls: string[] = [];
+
+    // Subir nuevas imágenes a Cloudinary
+    if (files && files.length > 0) {
+      photo_urls = await this.cloudinaryService.uploadMultipleImages(files, 'pets');
+    }
+
     return await this.prisma.pet.update({
       where: { id },
-      data: updatePetDto,
+      data: {
+        ...updatePetDto,
+        ...(files.length > 0 && { photo_urls }), // Solo actualiza si hay nuevas imágenes
+      },
+    });
+  }
+
+  // ---------------------- ADD IMAGES TO PET ----------------------
+  async addImages(id: string, files: Express.Multer.File[]) {
+    const pet = await this.findOne(id);
+    
+    // Subir nuevas imágenes
+    const newPhotoUrls = await this.cloudinaryService.uploadMultipleImages(files, 'pets');
+    
+    // Combinar imágenes existentes con las nuevas
+    return await this.prisma.pet.update({
+      where: { id },
+      data: {
+        photo_urls: [...pet.photo_urls, ...newPhotoUrls],
+      },
     });
   }
 

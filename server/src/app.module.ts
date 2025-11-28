@@ -8,6 +8,7 @@ import { RemindersModule } from './reminders/reminders.module';
 import { NutritionRecordsModule } from './nutrition-records/nutrition-records.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AuthModule } from './auth/auth.module';
     NutritionRecordsModule,
     PrismaModule,
     AuthModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

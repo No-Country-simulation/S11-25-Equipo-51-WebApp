@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,28 +5,6 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-enum Role {
-  USER
-  ADMIN
-}
-
-enum HealthRecordType {
-  VACUNA
-  DESPARASITACION_INTERNA
-  DESPARASITACION_EXTERNA
-  VISITA
-  ANALISIS
-  TRATAMIENTO
-  OTRO
-}
-
-enum ReminderType {
-  VACUNA
-  ALIMENTACION
-  VISITA
-  OTRO
 }
 
 model User {
@@ -53,66 +25,77 @@ model User {
 }
 
 model Pet {
-  id         String   @id @default(uuid())
-  name       String
-  age        String?
-  weight     Float?
-  specie     String
-  breed      String?
-  photo_urls  String[] // ARRAY de URLs
-
-  owner_id   String
-  owner      User     @relation(fields: [owner_id], references: [id])
-
-  health_records     HealthRecord[]
-  nutrition_records  NutritionRecord[]
-  reminders          Reminder[]
-
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id                String            @id @default(uuid())
+  name              String
+  age               String?
+  weight            Float?
+  specie            String
+  breed             String?
+  photo_urls        String[]
+  owner_id          String
+  created_at        DateTime          @default(now())
+  updated_at        DateTime          @updatedAt
+  health_records    HealthRecord[]
+  nutrition_records NutritionRecord[]
+  owner             User              @relation(fields: [owner_id], references: [id])
+  reminders         Reminder[]
 }
 
 model HealthRecord {
-  id            String            @id @default(uuid())
+  id            String           @id @default(uuid())
   pet_id        String
-  pet           Pet               @relation(fields: [pet_id], references: [id])
-
   type          HealthRecordType
   description   String?
   first_date    DateTime?
   second_date   DateTime?
-  document_urls  String[]   // ARRAY de archivos (fotos, pdf)
+  document_urls String[]
   vet_name      String?
-
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
+  created_at    DateTime         @default(now())
+  updated_at    DateTime         @updatedAt
+  pet           Pet              @relation(fields: [pet_id], references: [id])
 }
 
 model NutritionRecord {
-  id            String   @id @default(uuid())
-  pet_id        String
-  pet           Pet      @relation(fields: [pet_id], references: [id])
-
-  food_type     String
-  food_brand    String?
-  daily_meals   Int
-  portion_size  String // ej: "100g", "1 taza"
-  notes         String?
-
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
+  id           String   @id @default(uuid())
+  pet_id       String
+  food_type    String
+  food_brand   String?
+  daily_meals  Int
+  portion_size String
+  notes        String?
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  pet          Pet      @relation(fields: [pet_id], references: [id])
 }
 
 model Reminder {
-  id            String        @id @default(uuid())
-  pet_id        String
-  pet           Pet           @relation(fields: [pet_id], references: [id])
+  id           String       @id @default(uuid())
+  pet_id       String
+  title        String
+  type         ReminderType
+  date         DateTime
+  is_completed Boolean      @default(false)
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @updatedAt
+  pet          Pet          @relation(fields: [pet_id], references: [id])
+}
 
-  title         String
-  type          ReminderType
-  date          DateTime
-  is_completed  Boolean @default(false)
+enum Role {
+  USER
+  ADMIN
+}
 
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
+enum HealthRecordType {
+  VACUNA
+  CHEQUEO
+  TRATAMIENTO
+  
+}
+
+enum ReminderType {
+  VACUNA
+  ALIMENTACION
+  VISITA
+  TRATAMIENTO
+  OTRO
 }

@@ -1,9 +1,11 @@
-import { IsNotEmpty, MinLength } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
+import { IsStrongPassword } from 'src/common/validators/is-strong-password.validator';
 
 export class ResetPasswordDto {
   @IsNotEmpty()
   token: string;
 
-  @MinLength(6)
+  @IsNotEmpty()
+  @IsStrongPassword()
   newPassword: string;
 }
