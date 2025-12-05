@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { User, Mail, Shield, Bell, Moon, HelpCircle, Info, LogOut, ArrowLeft, X } from 'lucide-react';
 
 const SettingsPage = () => {
-  const [notifications, setNotifications] = useState({
+  const [notifications, setNotifications] = React.useState({
     reminders: true,
     push: true
   });
-  const [darkMode, setDarkMode] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [profile, setProfile] = useState({
+  const [darkMode, setDarkMode] = React.useState(false);
+  const [showEditModal, setShowEditModal] = React.useState(false);
+  const [showPasswordModal, setShowPasswordModal] = React.useState(false);
+  const [profile, setProfile] = React.useState({
     name: 'Usuario Demo',
     email: 'demo@pethealth.com',
     phone: ''
   });
-  const [formData, setFormData] = useState({ ...profile });
+  const [formData, setFormData] = React.useState({ ...profile });
+  const [passwordData, setPasswordData] = React.useState({
+    newPassword: '',
+    confirmPassword: ''
+  });
+  const [showSuccessMessage, setShowSuccessMessage] = React.useState(false);
 
   const toggleNotification = (type) => {
     setNotifications(prev => ({ ...prev, [type]: !prev[type] }));
@@ -35,6 +41,34 @@ const SettingsPage = () => {
   const handleCancelEdit = () => {
     setFormData(profile);
     setShowEditModal(false);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPasswordData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleSavePassword = (e) => {
+    e.preventDefault();
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
+    if (passwordData.newPassword.length < 8) {
+      alert('La contraseña debe tener al menos 8 caracteres');
+      return;
+    }
+    // Mostrar mensaje de éxito con instrucciones
+    setShowSuccessMessage(true);
+    setPasswordData({ newPassword: '', confirmPassword: '' });
+    setShowPasswordModal(false);
+  };
+
+  const handleCancelPassword = () => {
+    setPasswordData({ newPassword: '', confirmPassword: '' });
+    setShowPasswordModal(false);
   };
 
   return (
@@ -95,7 +129,10 @@ const SettingsPage = () => {
                   </div>
                 </button>
                 
-                <button className="w-full p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors">
+                <button 
+                  onClick={() => setShowPasswordModal(true)}
+                  className="w-full p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors"
+                >
                   <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
                     <Shield className="w-5 h-5 text-purple-600" />
                   </div>
@@ -224,7 +261,7 @@ const SettingsPage = () => {
             </div>
 
             {/* Modal Body */}
-            <form onSubmit={handleSaveProfile} className="p-6 space-y-5">
+            <div className="p-6 space-y-5">
               {/* Profile Picture */}
               <div className="flex flex-col items-center gap-4">
                 <div className="w-24 h-24 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center">
@@ -251,7 +288,6 @@ const SettingsPage = () => {
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-emerald-400 focus:outline-none transition-colors"
                   placeholder="Ingresa tu nombre"
-                  required
                 />
               </div>
 
@@ -266,10 +302,11 @@ const SettingsPage = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-emerald-400 focus:outline-none transition-colors"
+                  disabled
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-gray-100 text-gray-500 cursor-not-allowed"
                   placeholder="tu@email.com"
-                  required
                 />
+                <p className="text-xs text-gray-500 mt-1">El correo electrónico no se puede modificar</p>
               </div>
 
               {/* Phone Field */}
@@ -298,13 +335,149 @@ const SettingsPage = () => {
                   Cancelar
                 </button>
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleSaveProfile}
                   className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-medium hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl"
                 >
                   Guardar cambios
                 </button>
               </div>
-            </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Change Password Modal */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900">Cambiar Contraseña</h2>
+              <button 
+                onClick={handleCancelPassword}
+                className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 space-y-5">
+              {/* Icon */}
+              <div className="flex justify-center">
+                <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center">
+                  <Shield className="w-10 h-10 text-purple-600" />
+                </div>
+              </div>
+
+              {/* Info Message */}
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                <p className="text-sm text-blue-800 text-center">
+                  Ingresa tu nueva contraseña. Al confirmar, recibirás un código de verificación en tu teléfono celular registrado para completar el cambio.
+                </p>
+              </div>
+
+              {/* New Password */}
+              <div>
+                <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                  Nueva contraseña
+                </label>
+                <input
+                  type="password"
+                  id="newPassword"
+                  name="newPassword"
+                  value={passwordData.newPassword}
+                  onChange={handlePasswordChange}
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-400 focus:outline-none transition-colors"
+                  placeholder="Mínimo 8 caracteres"
+                  minLength={8}
+                />
+              </div>
+
+              {/* Confirm Password */}
+              <div>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                  Confirmar nueva contraseña
+                </label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={passwordData.confirmPassword}
+                  onChange={handlePasswordChange}
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-400 focus:outline-none transition-colors"
+                  placeholder="Confirma tu nueva contraseña"
+                />
+              </div>
+
+              {/* Info Box */}
+              <div className="bg-purple-50 border border-purple-200 rounded-xl p-4">
+                <p className="text-sm text-purple-800 font-medium mb-2">Requisitos de seguridad:</p>
+                <ul className="text-xs text-purple-700 space-y-1">
+                  <li>• Mínimo 8 caracteres</li>
+                  <li>• Se recomienda usar mayúsculas, minúsculas y números</li>
+                  <li>• Evita usar información personal</li>
+                </ul>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={handleCancelPassword}
+                  className="flex-1 py-3 rounded-xl border-2 border-gray-200 hover:bg-gray-50 font-medium transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSavePassword}
+                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white font-medium hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl"
+                >
+                  Actualizar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Message Modal */}
+      {showSuccessMessage && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
+            {/* Success Icon */}
+            <div className="flex justify-center mb-4">
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+                <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Message */}
+            <h3 className="text-2xl font-bold text-gray-900 text-center mb-3">
+              Código Enviado
+            </h3>
+            <p className="text-gray-600 text-center mb-6">
+              Hemos enviado un código de verificación a tu teléfono celular registrado. Ingresa el código en la aplicación web para completar el cambio de contraseña.
+            </p>
+
+            {/* Phone Display */}
+            <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-6">
+              <p className="text-sm text-purple-800 text-center">
+                📱 Revisa tu teléfono: {profile.phone || '+57 *** *** ****'}
+              </p>
+            </div>
+
+            {/* Close Button */}
+            <button
+              onClick={() => setShowSuccessMessage(false)}
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-medium hover:from-green-600 hover:to-green-700 transition-all shadow-lg hover:shadow-xl"
+            >
+              Entendido
+            </button>
           </div>
         </div>
       )}
